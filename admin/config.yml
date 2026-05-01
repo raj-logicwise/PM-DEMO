@@ -3,7 +3,7 @@ backend:
   branch: main
 
 media_folder: images/uploads/cms
-public_folder: /images/uploads/cms
+public_folder: images/uploads/cms
 
 collections:
   - name: posts
