@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+#medchatframe {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+</style>
+</head>
+<body>
+<iframe id="medchatframe" src=""></iframe>
+
+<script>
+let params = (new URL(document.location)).searchParams;
+let inviteCode = params.get('chatInviteCode');
+
+let widgetKey = params.get('widgetKey');
+const defaultWidgetKey = 'wXYQJnB7wEiIHsE4PhAi9w';
+
+if (inviteCode) {
+document.getElementById('medchatframe').src = "https://medchatapp.com/api/smschats/chatinvites/" + inviteCode;
+} else {
+  document.getElementById('medchatframe').src = `https://medchatapp.com/widget/${widgetKey ?? defaultWidgetKey}`
+}
+</script>
+</body>
+</html>

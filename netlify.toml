@@ -1,0 +1,8 @@
+[build]
+  command = "npm install && npm run build"
+  publish = "_site"
+
+[[headers]]
+  for = "/posts.json"
+  [headers.values]
+    Content-Type = "application/json"

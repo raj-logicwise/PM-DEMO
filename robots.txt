@@ -1,0 +1,11 @@
+User-Agent: *
+Disallow: 
+Disallow: /layouts
+Disallow: /fonts
+Disallow: /css
+Disallow: /downloads
+Disallow: /js
+Disallow: /media
+Disallow: /plugins
+Disallow: /third-party
+Sitemap: https://prismmedical.acentus365dev.com/sitemap.xml
