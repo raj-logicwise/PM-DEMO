@@ -1210,20 +1210,41 @@ var miscellaneous_tracking_options = {"ga_mode":"ga4","tracking_mode":"ga","trac
 		<script type="text/javascript" src="js/common-layout.js"></script>
 <style>#cms-new-posts .fusion-post-content-container img{float:left;margin:0 20px 15px 0;max-width:450px;}#cms-new-posts .fusion-clearfix{clear:both;}</style>
 <script>
-(function(){
-  fetch('/posts.json').then(function(r){return r.json();}).then(function(posts){
-    if(!posts||!posts.length)return;
-    var html='';
-    for(var i=0;i<posts.length;i++){
-      var p=posts[i];
-      html+='<article class="fusion-post-medium post type-post status-publish format-standard hentry category-uncategorized">';
-      html+='<div class="fusion-post-content post-content"><div class="fusion-post-content-container">';
-      html+=p.body;
-      html+='</div></div><div class="fusion-clearfix"></div></article>';
-    }
-    var el=document.getElementById('cms-new-posts');
-    if(el)el.innerHTML=html;
-  }).catch(function(){});
+(function () {
+  fetch('/posts.json')
+    .then(function (r) { return r.json(); })
+    .then(function (posts) {
+      if (!posts || !posts.length) return;
+      var container = document.getElementById('cms-new-posts');
+      if (!container) return;
+      var html = posts.map(function (post) {
+        var bodyHtml = post.body || '';
+
+        var heroSrc = post.image || '';
+        if (!heroSrc) {
+          var srcMatch = bodyHtml.match(/src="([^"]+)"/i);
+          if (srcMatch) heroSrc = srcMatch[1];
+        }
+
+        var cleanBody = bodyHtml
+          .replace(/<p>\s*<img[^>]*>\s*<\/p>/i, '')
+          .replace(/<img[^>]*>/i, '')
+          .replace(/<h[12][^>]*>[\s\S]*?<\/h[12]>/i, '')
+          .trim();
+
+        return '<article class="fusion-post-medium post type-post status-publish format-standard hentry">'
+          + '<div class="fusion-post-content post-content">'
+          + '<div class="fusion-post-content-container">'
+          + (heroSrc ? '<p><img src="' + heroSrc + '" alt="' + post.title + '" style="width:100%;height:auto;display:block;margin-bottom:12px;" /></p>' : '')
+          + '<p style="margin:0 0 10px;"><a href="' + post.url + '" style="font-family:\'Mukta Mahee\',sans-serif;font-size:16px;color:#052c5c;font-weight:600;text-decoration:none;">' + post.title + '</a></p>'
+          + cleanBody
+          + '</div></div>'
+          + '<div class="fusion-clearfix"></div>'
+          + '</article>';
+      }).join('');
+      container.innerHTML = html;
+    })
+    .catch(function () {});
 })();
 </script></body>
 
