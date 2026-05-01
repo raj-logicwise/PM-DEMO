@@ -39,7 +39,12 @@ module.exports = function (eleventyConfig) {
         // Split on YAML front matter delimiters and take everything after second ---
         const parts = raw.split(/^---[ \t]*$/m);
         const bodyMarkdown = parts.length >= 3 ? parts.slice(2).join("---").trim() : "";
-        post.data.renderedBody = md.render(bodyMarkdown);
+        let renderedHTML = md.render(bodyMarkdown);
+        
+        // Fix relative image paths by adding leading slash to images/uploads paths
+        renderedHTML = renderedHTML.replace(/src="(images\/uploads\/[^"]+)"/g, 'src="/$1"');
+        
+        post.data.renderedBody = renderedHTML;
         return post;
       })
       .sort((a, b) => b.date - a.date);
